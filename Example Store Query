@@ -1,0 +1,20 @@
+CREATE TABLE clothes
+(id INTEGER PRIMARY KEY, name TEXT, size TEXT, price INTEGER, quantity INTEGER);
+
+INSERT INTO clothes VALUES (1, "shirt", "s", 15, 5);
+INSERT INTO clothes VALUES (2, "hat", "s", 12, 1);
+INSERT INTO clothes VALUES (3, "pant", "m", 10, 2);
+INSERT INTO clothes VALUES (4, "belt", "l", 10, 45);
+INSERT INTO clothes VALUES (5, "jacket", "s", 11, 15);
+INSERT INTO clothes VALUES (6, "sock", "s", 5, 11);
+INSERT INTO clothes VALUES (7, "shoe", "m", 6, 22);
+INSERT INTO clothes VALUES (8, "watch", "m", 7, 55);
+INSERT INTO clothes VALUES (9, "chain", "m", 8, 44);
+INSERT INTO clothes VALUES (10, "clip", "m", 9, 574);
+INSERT INTO clothes VALUES (11, "fan", "l", 10, 74);
+INSERT INTO clothes VALUES (12, "shirt", "l", 10, 1);
+INSERT INTO clothes VALUES (13, "hat", "l", 10, 7);
+INSERT INTO clothes VALUES (14, "belt", "l", 10, 8);
+INSERT INTO clothes VALUES (15, "jacket", "l", 10, 5);
+
+SELECT * FROM clothes WHERE name = "shirt" ORDER BY price
