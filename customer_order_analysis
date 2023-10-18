@@ -52,7 +52,7 @@ JOIN customers c
   ON f.orderID = c.order_id
   
 WHERE Feb.Quantity > 2
-AND length(f.orderID) = 6 
+AND LENGTH(f.orderID) = 6 
 AND f.orderID <> 'Order ID'
 
 # all products sold in Los Angeles and the number sold, in february
@@ -60,3 +60,50 @@ AND f.orderID <> 'Order ID'
 SELECT Product, SUM(Quantity) FROM FebSales
 WHERE location LIKE '%Los Angeles%'
 GROUP BY Product
+
+# locations in NY received at least 3 orders in january and the number of orders
+
+SELECT distinct location, count(orderID)
+FROM JanSales
+WHERE location LIKE '%NY%'
+  AND length(orderID) = 6 
+  AND orderID <> 'Order ID'
+GROUP BY location
+HAVING COUNT(orderID) > 2
+
+# number of type of each headphone sold in february
+
+SELECT product, SUM(Quantity)
+FROM FebSales 
+WHERE product LIKE '%Headphones%'
+GROUP BY product
+
+# average amount spent per account in february
+
+SELECT SUM(f.Quantity * f.price) / COUNT(c.acctnum)
+FROM FebSales f
+
+JOIN customers c
+  ON f.orderID = c.order_id
+
+WHERE LENGTH(f.orderID) = 6 
+AND f.orderID <> 'Order ID'
+
+# average quantity of products purchased per account in february
+
+SELECT SUM(f.Quantity) / COUNT(c.acctnum)
+FROM FebSales f
+
+JOIN customers c
+  ON f.orderID = c.order_id
+
+WHERE LENGTH(orderID) = 6 
+AND orderID <> 'Order ID'
+
+# the total revenue of the product having the most revenue in january
+
+SELECT product, SUM(Quantity * price)
+FROM JanSales 
+GROUP BY product
+ORDER BY SUM(Quantity*price) DESC 
+LIMIT 1
