@@ -1,0 +1,56 @@
+# analysis of customers and sales using an existing database
+
+# number of orders in january
+
+SELECT COUNT(orderID)
+FROM JanSales
+WHERE length(orderID) = 6 
+AND orderID <> 'Order ID'
+
+# number of january orders where the product bought was for an iPhone
+  
+SELECT COUNT(orderID)
+FROM JanSales
+WHERE Product = 'iPhone'
+AND length(orderID) = 6 
+AND orderID <> 'Order ID'
+
+# all unique account numbers of customers for orders in february
+
+SELECT distinct c.acctnum
+FROM customers c
+INNER JOIN FebSales f
+  ON c.order_id = f.orderID
+  
+WHERE length(f.orderID) = 6 
+AND f.orderID <> 'Order ID'
+
+# cheapest product sold in january and the price of it
+
+SELECT distinct Product, price
+FROM JanSales
+WHERE price IN (SELECT min(price) FROM JanSales); 
+
+# total revenue for each product sold in january
+
+SELECT product, SUM(Quantity) * price as revenue
+FROM JanSales
+GROUP BY product
+
+# products sold in february at "548 Lincoln St, Seattle, WA 98101" with how much of each was sold and total revenue
+
+SELECT product, SUM(Quantity), SUM(Quantity) * price as revenue
+FROM FebSales 
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY product
+
+# number of customers who order more than 2 products at once, and the average amount spent for each customer
+
+SELECT COUNT(distinct c.acctnum), AVG(f.Quantity*price)
+FROM FebSales f
+JOIN customers c
+  ON f.orderID = c.order_id
+  
+WHERE Feb.Quantity > 2
+AND length(f.orderID) = 6 
+AND f.orderID <> 'Order ID'
