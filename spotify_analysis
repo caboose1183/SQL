@@ -1,0 +1,32 @@
+# data used from kaggle, top 50 spotify
+
+# namd and number of artists who show up more than once, from highest to lowest
+
+SELECT distinct artist_name, COUNT(*) FROM Spotifydata
+GROUP BY artist_name
+HAVING COUNT(*) > 1
+ORDER BY COUNT(*) DESC
+
+# the average danceability of doja cat songs
+
+SELECT AVG(danceability) FROM Spotifydata
+WHERE artist_name = 'Doja Cat'
+
+# average duration of song in seconds with a tempo higher than 120
+
+SELECT ROUND(AVG(duration_ms) / 1000, 2) AS "Average song duration in seconds" 
+FROM Spotifydata
+WHERE tempo > 120
+
+# songs that could be popular house party songs
+
+SELECT track_name, artist_name, popularity,
+CASE
+    WHEN popularity > 90 THEN 'Excellent song choice'
+    WHEN popularity > 80 THEN 'Good song choice'
+    ELSE 'Okay song choice'
+END AS 'Song popularity choice'
+
+FROM Spotifydata
+
+ORDER BY track_name ASC
