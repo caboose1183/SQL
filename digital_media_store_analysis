@@ -1,0 +1,21 @@
+# full customer info from those not in USA
+
+SELECT FirstName, LastName, CustomerID, Country 
+FROM customers
+WHERE Country != 'USA'
+
+# customer info from those in brazil
+
+SELECT FirstName, LastName, CustomerID, Country 
+FROM customers
+WHERE Country = 'Brazil'
+
+# customer invoices from those in brazil
+
+SELECT c.FirstName, c.LastName, i.InvoiceID, i.InvoiceDate, i.BillingCountry
+FROM customers c 
+    JOIN invoices i
+    ON c.Customerid = i.CustomerId
+    
+WHERE i.BillingCountry = 'Brazil'
+
