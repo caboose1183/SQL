@@ -48,4 +48,68 @@ JOIN customers c
 JOIN invoices i
     ON c.CustomerId = i.CustomerId
 
-# 
+# total invoices in 2009
+
+SELECT COUNT(*) FROM invoices
+WHERE InvoiceDate LIKE '2009%'
+
+# total sales in 2009
+
+SELECT SUM(Total) FROM invoices
+WHERE InvoiceDate LIKE '2009%'
+
+# list of track names with the associated invoice id
+
+SELECT t.Name, i.InvoiceLineId
+FROM Invoice_items i
+JOIN Tracks t 
+    ON i.TrackId = t.TrackId;
+
+# track name and artist on associated invoice id
+
+SELECT t.Name as Track, ar.name as Artist,  i.InvoiceLineId
+FROM Invoice_items i
+JOIN tracks t 
+    ON i.TrackId = t.TrackId
+JOIN chinook.albums a
+    ON a.AlbumId=t.AlbumId
+JOIN artists ar
+    ON ar.ArtistId = a.ArtistId
+ORDER BY Track;
+
+# showing the track name, album name, file type and genre
+
+SELECT t.Name AS 'Track', a.Title AS 'Album', m.Name AS 'File Type', g.Name AS 'Genre'
+FROM tracks t
+JOIN albums a 
+    ON a.AlbumId = t.AlbumId
+JOIN media_types m
+    ON m.MediaTypeId = t.MediaTypeId
+JOIN genres g
+    ON g.GenreId = t.GenreId;
+
+# total sales made by each sales agent
+
+SELECT e.FirstName, e.LastName, SUM(i.Total) as 'Total Sales' 
+FROM Employees e
+JOIN Customers c 
+    ON c.SupportRepId = e.EmployeeId
+JOIN chinook.Invoices i
+    ON i.CustomerId = c.CustomerId
+WHERE e.Title = 'Sales Support Agent' 
+GROUP BY e.FirstName;
+
+# the sales agent that made the most money
+
+SELECT e.FirstName, e.LastName, SUM(i.Total) as 'Total Sales' 
+FROM employees e
+JOIN customers c 
+    ON c.SupportRepId = e.EmployeeId
+JOIN invoices i 
+    ON i.CustomerId = c.CustomerId
+
+WHERE e.Title = 'Sales Support Agent' 
+AND i.InvoiceDate LIKE '2009%' 
+
+GROUP BY e.FirstName
+ORDER BY SUM(i.Total)  DESC LIMIT 1;
