@@ -19,3 +19,33 @@ FROM customers c
     
 WHERE i.BillingCountry = 'Brazil'
 
+# shows employees who are sales agents
+
+SELECT FirstName, LastName 
+FROM employees
+WHERE Title = 'Sales Support Agent'
+
+# unique list of billing countries from invoice table
+
+SELECT distinct BillingCountry
+FROM invoices
+
+# invoices associated with each sales rep
+
+SELECT i.InvoiceId, e.FirstName, e.LastName
+FROM employees e
+JOIN customers c
+    ON e.EmployeeId = c.SupportRepId
+JOIN invoices i
+    ON c.CustomerId = i.CustomerId
+
+# show all invoices for all customers, including the customer full name, rep full name, invoice id and total
+
+SELECT c. FirstName, c.LastName, c.Country, i.InvoiceId, i.Total, e.FirstName, e.LastName
+FROM employees e
+JOIN customers c
+    ON e.EmployeeId = c.SupportRepId
+JOIN invoices i
+    ON c.CustomerId = i.CustomerId
+
+# 
